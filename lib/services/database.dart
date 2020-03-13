@@ -11,7 +11,7 @@ class DatabaseService {
 
   // get categories stream
   Stream<List<Shop>> get shops =>
-      shopsCollection.snapshots().map(_shopListFromSnapshot);
+      shopsCollection.orderBy('name').snapshots().map(_shopListFromSnapshot);
 
   // category list from snapshot
   List<Shop> _shopListFromSnapshot(QuerySnapshot snapshot) {
