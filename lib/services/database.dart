@@ -5,6 +5,10 @@ class DatabaseService {
   final CollectionReference shopsCollection =
       Firestore.instance.collection('shops');
 
+  Future setNewShop(String name) async {
+    await shopsCollection.add(<String, dynamic>{'name': name});
+  }
+
   // get categories stream
   Stream<List<Shop>> get shops =>
       shopsCollection.snapshots().map(_shopListFromSnapshot);
@@ -13,7 +17,7 @@ class DatabaseService {
   List<Shop> _shopListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return Shop(
-          name: doc.data['name'] ?? '',
+        name: doc.data['name'] ?? '',
       );
     }).toList();
   }

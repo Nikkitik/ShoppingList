@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shoppinglist/services/database.dart';
 
-class AddShop extends StatelessWidget {
+class AddShop extends StatefulWidget {
+  @override
+  _AddShopState createState() => _AddShopState();
+}
+
+class _AddShopState extends State<AddShop> {
   final _formKey = GlobalKey<FormState>();
+
+  String _shopName;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +55,8 @@ class AddShop extends StatelessWidget {
                 TextFormField(
                   validator: (val) =>
                       val.isEmpty ? 'Введите название магазина' : null,
+                  onChanged: (val) => setState(() => _shopName = val),
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     errorBorder: OutlineInputBorder(
@@ -65,8 +75,9 @@ class AddShop extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState.validate()) {
+                      await DatabaseService().setNewShop(_shopName);
                       Navigator.of(context).pop(); // To close the dialog
                     }
                   },
